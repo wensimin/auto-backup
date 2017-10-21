@@ -13,6 +13,8 @@ class Application(tk.Frame):
         super().__init__(master)
         self.hostLabel = tk.Label(self, text="主机地址:")
         self.hostInput = tk.Entry(self, width=20)
+        self.userLabel = tk.Label(self, text="用户名:")
+        self.userInput = tk.Entry(self, width=15)
         self.passwordLabel = tk.Label(self, text="密码:")
         self.passwordInput = tk.Entry(self, width=15, show='*')
         self.pathLabel = tk.Label(self, text="远程路径:")
@@ -32,6 +34,8 @@ class Application(tk.Frame):
             self.config = load_config()
             self.hostVar = tk.StringVar()
             self.hostVar.set(self.config["ip"])
+            self.userVar = tk.StringVar()
+            self.userVar.set(self.config["user"])
             self.passwordVar = tk.StringVar()
             self.passwordVar.set(self.config["password"])
             self.pathVar = tk.StringVar()
@@ -39,6 +43,7 @@ class Application(tk.Frame):
             self.localPathVar = tk.StringVar()
             self.localPathVar.set(self.config["localPath"])
             self.hostInput["textvariable"] = self.hostVar
+            self.userInput["textvariable"] = self.userVar
             self.passwordInput["textvariable"] = self.passwordVar
             self.pathInput["textvariable"] = self.pathVar
             self.localPathInput["textvariable"] = self.localPathVar
@@ -51,6 +56,7 @@ class Application(tk.Frame):
         self.config["password"] = self.passwordVar.get()
         self.config["path"] = self.pathVar.get()
         self.config["localPath"] = self.localPathVar.get()
+        self.config["user"] = self.userVar.get()
         save_config(self.config)
 
     def event(self):
@@ -63,19 +69,22 @@ class Application(tk.Frame):
         self.hostLabel.grid(column=0, row=0, padx=20, sticky=tk.E)
         self.hostInput.grid(column=1, row=0, sticky=tk.W)
         # row 2
-        self.passwordLabel.grid(column=0, row=1, padx=20, sticky=tk.E)
-        self.passwordInput.grid(column=1, row=1, sticky=tk.W)
+        self.userLabel.grid(column=0, row=1, padx=20, sticky=tk.E)
+        self.userInput.grid(column=1, row=1, sticky=tk.W)
         # row 3
-        self.pathLabel.grid(column=0, row=2, padx=20, sticky=tk.E)
-        self.pathInput.grid(column=1, row=2, sticky=tk.W)
+        self.passwordLabel.grid(column=0, row=2, padx=20, sticky=tk.E)
+        self.passwordInput.grid(column=1, row=2, sticky=tk.W)
         # row 4
-        self.localPathLabel.grid(column=0, row=3, padx=20, sticky=tk.E)
-        self.localPathInput.grid(column=1, row=3, sticky=tk.W)
+        self.pathLabel.grid(column=0, row=3, padx=20, sticky=tk.E)
+        self.pathInput.grid(column=1, row=3, sticky=tk.W)
         # row 5
-        self.save.grid(column=1, row=4, pady=10, columnspan=1, sticky=tk.W)
-        self.load.grid(column=1, row=4, pady=10, columnspan=1, padx=30, sticky=tk.E)
+        self.localPathLabel.grid(column=0, row=4, padx=20, sticky=tk.E)
+        self.localPathInput.grid(column=1, row=4, sticky=tk.W)
         # row 6
-        self.consoleBox.grid(column=0, row=5, columnspan=4, sticky=tk.E + tk.W)
+        self.save.grid(column=1, row=5, pady=10, columnspan=1, sticky=tk.W)
+        self.load.grid(column=1, row=5, pady=10, columnspan=1, padx=30, sticky=tk.E)
+        # row 7
+        self.consoleBox.grid(column=0, row=6, columnspan=4, sticky=tk.E + tk.W)
 
     def start_save(self):
         if self.job.is_alive():

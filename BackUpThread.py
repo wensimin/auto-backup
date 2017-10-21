@@ -14,6 +14,7 @@ class BackUpThread(threading.Thread):
         self.config = config
 
     def run(self):
+        max_sec = int(self.config["interval"])
         while self.running:
             try:
                 self.log("开始备份")
@@ -22,10 +23,12 @@ class BackUpThread(threading.Thread):
                     self.log("备份完成")
             except Exception as e:
                 self.log("备份出现错误:" + str(e))
-                self.log("备份将在" + self.config["interval"] + "秒后重试")
+                self.log("备份将在" + str(max_sec) + "秒后重试")
             finally:
                 if self.running:
-                    time.sleep(int(self.config["interval"]))
+                    for i in range(max_sec):
+                        if self.running:
+                            time.sleep(1)
         self.log("备份已停止")
 
     def log(self, text):
