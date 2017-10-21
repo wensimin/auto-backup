@@ -25,10 +25,10 @@ class BackUpThread(threading.Thread):
                 self.log("备份出现错误:" + str(e))
                 self.log("备份将在" + str(max_sec) + "秒后重试")
             finally:
-                if self.running:
-                    for i in range(max_sec):
-                        if self.running:
-                            time.sleep(1)
+                for i in range(max_sec):
+                    if not self.running:
+                        break
+                    time.sleep(1)
         self.log("备份已停止")
 
     def log(self, text):
