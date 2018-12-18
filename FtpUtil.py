@@ -28,7 +28,7 @@ def downFiles(ftp, path, bash_path="/", log=lambda m: print(m)):
     if not path.endswith("/"):
         path += "/"
     for file in ftp.nlst(bash_path):
-        remote_path = file
+        remote_path = bash_path + "/" + file
         name = os.path.basename(file)
         if is_ftp_dir(ftp, remote_path):
             new_path = os.path.join(path, name)

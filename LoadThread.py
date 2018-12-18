@@ -14,7 +14,9 @@ class Loadhread(threading.Thread):
     def run(self):
         try:
             self.log("开始下载")
-            with FTP(self.config["ip"], self.config["user"], self.config["password"]) as ftp:
+            with FTP() as ftp:
+                ftp.connect(self.config["ip"], self.config["port"])
+                ftp.login(self.config["user"], self.config["password"])
                 downFiles(ftp, self.path, self.config["path"], self.log)
                 self.log("下载完成")
         except Exception as e:

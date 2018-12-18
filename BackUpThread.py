@@ -18,7 +18,9 @@ class BackUpThread(threading.Thread):
         while self.running:
             try:
                 self.log("开始备份")
-                with FTP(self.config["ip"], self.config["user"], self.config["password"]) as ftp:
+                with FTP() as ftp:
+                    ftp.connect(self.config["ip"], self.config["port"])
+                    ftp.login(self.config["user"], self.config["password"])
                     placeFiles(ftp, self.config["localPath"], self.config["path"], self.log)
                     self.log("备份完成")
             except Exception as e:
